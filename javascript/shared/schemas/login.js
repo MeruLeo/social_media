@@ -11,5 +11,5 @@ const loginValidationScheme = yup.object({
         .required("password is required"),
 });
 
-export default loginValidationScheme; // برای ES Modules
-module.exports = loginValidationScheme; // برای CommonJS
+export default loginValidationScheme;
+module.exports = loginValidationScheme;

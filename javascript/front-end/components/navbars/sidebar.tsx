@@ -6,25 +6,9 @@ import { HomeSimple } from "iconoir-react";
 import { Tooltip } from "@nextui-org/tooltip";
 import { BellIcon, DirectIcon, PlusIcon } from "../icons/icons";
 import { Logo, SearchIcon } from "../icons";
-import Image from "next/image";
-import {
-    Dropdown,
-    DropdownTrigger,
-    DropdownMenu,
-    DropdownItem,
-    Avatar,
-    User,
-    Divider,
-} from "@nextui-org/react";
 import UserDropdown from "./sidebarAvatar";
 import { usePathname } from "next/navigation";
-
-interface SidebarLinkProps {
-    href: string;
-    icon: ReactNode;
-    label: string;
-    active?: boolean;
-}
+import { SidebarLinkProps } from "@/types";
 
 const SidebarLink = ({ href, icon, label }: SidebarLinkProps) => {
     const pathname = usePathname();
@@ -78,7 +62,7 @@ export const Sidebar = () => {
     ];
 
     return (
-        <div className="fixed py-4 flex flex-col justify-between items-center top-0 right-0 w-20 h-screen bg-zinc-900 z-50">
+        <div className="relative py-4 flex flex-col justify-between items-center top-0 right-0 w-20 h-screen bg-zinc-900 z-50">
             <nav className="flex flex-col items-center">
                 <Logo className="flex justify-center items-center mb-4" />
                 {sidebarLinks.map((sidebarLink) => (

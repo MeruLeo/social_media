@@ -1,13 +1,20 @@
+import { Sidebar } from "@/components/navbars/sidebar";
+import { SidebarProfile } from "@/components/profile/profile.sidebar";
+
 export default function BlogLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <div className="inline-block max-w-lg text-center justify-center">
-        {children}
-      </div>
-    </section>
-  );
+    return (
+        <>
+            <section className="flex">
+                <div className="flex relative">
+                    <Sidebar />
+                    <SidebarProfile />
+                </div>
+                <div className="w-full text-center">{children}</div>
+            </section>
+        </>
+    );
 }

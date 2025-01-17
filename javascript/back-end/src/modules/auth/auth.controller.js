@@ -51,11 +51,11 @@ exports.register = async (req, res) => {
         const refreshToken = await RefreshToken.createToken(newUser);
 
         res.cookie("access-token", accessToken, {
-            maxAge: 900_000,
+            maxAge: 900_000_000,
             httpOnly: true,
         });
         res.cookie("refresh-token", refreshToken, {
-            maxAge: 900_000,
+            maxAge: 900_000_000,
             httpOnly: true,
         });
 

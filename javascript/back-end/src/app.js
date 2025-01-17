@@ -3,6 +3,8 @@ const cors = require("cors");
 const { setHeaders } = require("./middlewares/headers");
 const { errorHandler } = require("./middlewares/errorHandler");
 const authRoutes = require("./modules/auth/auth.routes");
+const postRoutes = require("./modules/posts/post.routes");
+const pageRoutes = require("./modules/pages/page.routes");
 const cookieParser = require("cookie-parser");
 
 const app = express();
@@ -25,6 +27,8 @@ app.use(
 
 // *routes
 app.use("/v1/auth", authRoutes);
+app.use("/v1/posts", postRoutes);
+app.use("/v1/pages", pageRoutes);
 
 //*not found error
 app.use((req, res) => {
