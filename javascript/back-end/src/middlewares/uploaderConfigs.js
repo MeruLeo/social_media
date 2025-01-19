@@ -48,14 +48,3 @@ exports.createMulterUploader = ({
 
     return uploader;
 };
-
-// مثال استفاده:
-// const avatarUploader = createMulterUploader({
-//     destination: './uploads/avatars',
-//     allowedMimeTypes: ['image/jpeg', 'image/png'],
-//     maxFileSize: 2 * 1024 * 1024 // 2MB
-// });
-//
-// router.post('/upload-avatar', avatarUploader.single('avatar'), (req, res) => {
-//     // کد مدیریت آپلود
-// });

@@ -12,6 +12,10 @@ exports.getPage = async (req, res) => {
         //*for checking user access to this page
         const hasAccess = await hasAccessToPage(user._id, pageId);
 
+        if (!user) {
+            return errorResponse(res, 401, "کاربر احراز هویت نشده است.");
+        }
+
         // *find the user/page
         const page = await userModel
             .findById(pageId)
@@ -27,6 +31,10 @@ exports.getPage = async (req, res) => {
                 res,
                 403,
                 "صفحه مورد نظر خصوصی است ، ابتدا شروع به دنبال کردن کنید",
+                {
+                    username: page.username,
+                    name: page.name,
+                },
             );
         }
 
@@ -35,7 +43,7 @@ exports.getPage = async (req, res) => {
             .find({
                 following: pageId,
             })
-            .populate("follower", "username name");
+            .populate("follower", "username name avatar");
         followers = followers.map((item) => item.follower);
 
         // *find this page followings
@@ -43,13 +51,16 @@ exports.getPage = async (req, res) => {
             .find({
                 follower: pageId,
             })
-            .populate("following", "username name");
+            .populate("following", "username name avatar");
         followings = followings.map((item) => item.following);
 
         // *show page posts
-        let posts = await postModel.find({
-            user: pageId,
-        });
+        let posts = await postModel
+            .find({
+                user: pageId,
+            })
+            .lean()
+            .sort({ createdAt: -1 });
 
         // *check if user is following this page
         let isFollow = false;
@@ -61,13 +72,25 @@ exports.getPage = async (req, res) => {
             isFollow = true;
         }
 
+        //*checking own page
+        const isOwnPage = user._id.toString() === pageId;
+
         // *remove sensitive data from the user object at response
         page.password = undefined;
         page.role = undefined;
 
-        return res.json({ page, isFollow, followers, followings, posts });
+        return res.json({
+            page,
+            isFollow,
+            followers,
+            followings,
+            posts,
+            isOwnPage,
+        });
     } catch (err) {
-        return errorResponse(res, 500, err.message);
+        return errorResponse(res, 500, err.message, {
+            message: "خطای سمت سرور",
+        });
     }
 };
 
@@ -81,10 +104,10 @@ exports.follow = async (req, res) => {
             return errorResponse(res, 404, "صفحه‌ای برای این کاربر یافت نشد");
         }
 
-        const isExistingFollwer = await followModel.findOne(
-            { follower: user._id },
-            { following: pageId },
-        );
+        const isExistingFollwer = await followModel.findOne({
+            follower: user._id,
+            following: pageId,
+        });
         if (isExistingFollwer) {
             return errorResponse(
                 res,
@@ -121,11 +144,10 @@ exports.unfollow = async (req, res) => {
         const { pageId } = req.params;
         const user = req.user;
 
-        const isExistingFollwer = await followModel.findOneAndDelete(
-            { follower: user._id },
-            { following: pageId },
-        );
-
+        const isExistingFollwer = await followModel.findOneAndDelete({
+            follower: user._id,
+            following: pageId,
+        });
         if (!isExistingFollwer) {
             return errorResponse(
                 res,

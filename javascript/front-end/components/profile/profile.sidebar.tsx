@@ -34,30 +34,13 @@ const SidebarLink = ({ href, icon, label }: SidebarLinkProps) => {
     );
 };
 
-export const SidebarProfile = () => {
-    const sidebarLinks: SidebarLinkProps[] = [
-        {
-            href: "/profile",
-            icon: <UserIcon />,
-            label: "حساب کاربری",
-        },
-        {
-            href: "/bookmarks",
-            icon: <BookmarkIcon />,
-            label: "نشان شده ها",
-        },
-        {
-            href: "/your-comments",
-            icon: <CommentIcon />,
-            label: "نظرات شما",
-        },
-        {
-            href: "/settings",
-            icon: <SettingsIcon />,
-            label: "تنظیمات حساب",
-        },
-    ];
-
+export const SidebarProfile = ({
+    sidebarLinks,
+    extraLink,
+}: {
+    sidebarLinks: SidebarLinkProps[];
+    extraLink?: SidebarLinkProps;
+}) => {
     return (
         <div className="bg-zinc-800 w-fit justify-between items-center relative top-0  h-screen z-40 flex flex-col">
             <nav className="flex flex-col relative p-2">
@@ -65,14 +48,17 @@ export const SidebarProfile = () => {
                     <SidebarLink key={link.href} {...link} />
                 ))}
             </nav>
-            <button
-                className={`p-4 text-xl bg-red-600 flex justify-normal items-center gap-2 relative mb-2 rounded-2xl w-[13rem]`}
-            >
-                <span>
-                    <LogoutIcon />
-                </span>
-                <h5>خروج</h5>
-            </button>
+            {extraLink ? (
+                <button
+                    onClick={extraLink?.clickEvent}
+                    className={`p-4 transition-all duration-200 hover:scale-95 text-xl bg-red-600 flex justify-normal items-center gap-2 relative mb-2 rounded-2xl w-[13rem]`}
+                >
+                    <span>{extraLink?.icon}</span>
+                    <h5>{extraLink?.label}</h5>
+                </button>
+            ) : (
+                <></>
+            )}
         </div>
     );
 };

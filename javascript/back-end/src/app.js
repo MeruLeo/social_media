@@ -6,6 +6,8 @@ const authRoutes = require("./modules/auth/auth.routes");
 const postRoutes = require("./modules/posts/post.routes");
 const pageRoutes = require("./modules/pages/page.routes");
 const cookieParser = require("cookie-parser");
+const path = require("path");
+const fs = require("fs");
 
 const app = express();
 
@@ -16,6 +18,9 @@ app.use(express.json({ limit: "50mb" }));
 //*cookie parser
 app.use(cookieParser());
 
+//*static path
+app.use("/posts", express.static(path.join(__dirname, "public/posts")));
+
 // *cors policy
 app.use(
     cors({
@@ -23,7 +28,6 @@ app.use(
         credentials: true,
     }),
 );
-// app.use(setHeaders);
 
 // *routes
 app.use("/v1/auth", authRoutes);
