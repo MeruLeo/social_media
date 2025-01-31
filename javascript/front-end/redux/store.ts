@@ -4,6 +4,7 @@ import registerReducer from "./slices/auth/registerSlice";
 import loginReducer from "./slices/auth/loginSlice";
 import pageReducer from "./slices/page/pageSlice";
 import followingReducer from "./slices/page/followAndUnfollowSlice";
+import postReducer from "./slices/post/postSlice";
 
 const store = configureStore({
     reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
         login: loginReducer,
         page: pageReducer,
         following: followingReducer,
+        post: postReducer,
     },
 });
 

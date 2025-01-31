@@ -1,14 +1,12 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
-import { Link } from "@nextui-org/link";
 import clsx from "clsx";
 
 import { Providers } from "./providers";
 
 import { siteConfig } from "@/config/site";
-import { sfblack, sfmedium } from "@/config/fonts";
-import { Navbar } from "@/components/navbar";
-import { Sidebar } from "@/components/navbars/sidebar";
+import { sfmedium } from "@/config/fonts";
+import { ClientSidebarWrapper } from "@/components/ClientSidebarWrapper";
 
 export const metadata: Metadata = {
     title: {
@@ -45,9 +43,8 @@ export default function RootLayout({
                 <Providers
                     themeProps={{ attribute: "class", defaultTheme: "dark" }}
                 >
-                    <div className="relative flex h-screen w-full">
-                        {/* <Navbar /> */}
-                        <Sidebar />
+                    <div className="relative flex h-screen w-full overflow-y-auto">
+                        <ClientSidebarWrapper />
                         <main className="w-full">{children}</main>
                     </div>
                 </Providers>

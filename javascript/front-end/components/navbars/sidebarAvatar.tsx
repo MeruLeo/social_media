@@ -7,6 +7,7 @@ import {
 } from "@nextui-org/react";
 import { Avatar } from "@nextui-org/avatar";
 import { BookmarkIcon, EyeIcon, LogoutIcon } from "../icons/icons";
+import AvatarPage from "../ui/avatar";
 
 interface DropdownItem {
     key: string;
@@ -39,12 +40,11 @@ const UserDropdown: React.FC<UserDropdownProps> = ({
     return (
         <Dropdown placement="top-end">
             <DropdownTrigger>
-                <Avatar
-                    isBordered
+                <AvatarPage
+                    isBorder
                     as="button"
                     size="lg"
-                    radius="lg"
-                    className="transition-transform"
+                    extraStyles="transition-transform"
                     src={avatarSrc}
                     alt={avatarAlt}
                 />

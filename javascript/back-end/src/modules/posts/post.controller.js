@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
     const user = req.user;
 
     try {
-        const tags = hashtags.split(",");
+        const tags = hashtags ? hashtags.split(",") : [];
 
         if (!req.file) {
             return errorResponse(res, 400, "لطفا ابتدا یک فایل آپلود کنید");

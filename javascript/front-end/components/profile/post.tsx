@@ -1,5 +1,5 @@
 import React from "react";
-import { PostAction, PostMediaProps, PostProps } from "@/types";
+import { MediaProps, PostAction, PostProps } from "@/types";
 import {
     Avatar,
     Button,
@@ -18,6 +18,7 @@ import {
     HeartIcon,
     ShareIcon,
 } from "../icons/icons";
+import AvatarPage from "../ui/avatar";
 
 export default function Post({
     _id,
@@ -28,12 +29,10 @@ export default function Post({
 }: PostProps) {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    const renderMedia = (media: PostMediaProps) => {
+    const renderMedia = (media: MediaProps) => {
         const mediaUrl = `${apiUrl}/${media.path}`;
         const isImage = /\.(jpeg|jpg|gif|png|webp)$/i.test(media.filename);
         const isVideo = /\.(mp4|webm|ogg)$/i.test(media.filename);
-
-        console.log(mediaUrl);
 
         if (isImage) {
             return (
@@ -82,7 +81,12 @@ export default function Post({
     return (
         <Card fullWidth className="rounded-[2rem] text-right">
             <CardHeader className="flex gap-4">
-                <Avatar src={user?.avatar} alt={user?.username} size="lg" />
+                <AvatarPage
+                    src={user.avatar}
+                    alt={user.username}
+                    size="lg"
+                    isBorder
+                />
                 <div>
                     <h4 className="font-bold text-lg">{user?.name}</h4>
                     <h6 className="text-primary-bangladesh-green">
@@ -113,7 +117,7 @@ export default function Post({
                             key={hashtag}
                             className="bg-primary-rich-black text-secondary-mint p-2 rounded-full"
                         >
-                            #{hashtag}
+                            {hashtag}
                         </span>
                     ))}
                 </section>

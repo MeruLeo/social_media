@@ -165,3 +165,87 @@ exports.unfollow = async (req, res) => {
         return errorResponse(res, 500, err.message);
     }
 };
+
+exports.edit = async (req, res) => {
+    try {
+        const { pageId } = req.params;
+        const updates = req.body;
+        const user = req.user;
+
+        if (user._id.toString() !== pageId) {
+            return errorResponse(
+                res,
+                403,
+                "شما اجازه ویرایش این صفحه را ندارید",
+            );
+        }
+
+        const allowedFields = ["name", "username", "email", "bio", "private"];
+        const filteredUpdates = Object.keys(updates)
+            .filter((field) => allowedFields.includes(field))
+            .reduce((obj, field) => {
+                obj[field] = updates[field];
+                return obj;
+            }, {});
+
+        if (Object.keys(filteredUpdates).length === 0) {
+            return errorResponse(
+                res,
+                400,
+                "هیچ فیلد معتبری برای ویرایش ارسال نشده است",
+            );
+        }
+
+        const updatedPage = await userModel.findByIdAndUpdate(
+            pageId,
+            filteredUpdates,
+            {
+                new: true,
+                runValidators: true,
+            },
+        );
+
+        return successResponse(res, 200, updatedPage);
+    } catch (err) {
+        if (err.code === 11000) {
+            if (err.keyPattern?.username) {
+                return errorResponse(
+                    res,
+                    400,
+                    "این نام کاربری قبلاً انتخاب شده است. لطفاً نام دیگری انتخاب کنید.",
+                );
+            }
+            if (err.keyPattern?.email) {
+                return errorResponse(
+                    res,
+                    400,
+                    "این ایمیل قبلاً ثبت شده است. لطفاً ایمیل دیگری وارد کنید.",
+                );
+            }
+        }
+        return errorResponse(res, 500, err.message);
+    }
+};
+
+exports.editAvatar = async (req, res) => {
+    const user = req.user;
+
+    try {
+        if (!req.file) {
+            return errorResponse(res, 400, "لطفا ابتدا یک فایل آپلود کنید");
+        }
+
+        const avatarUrlPath = `avatars/${req.file.filename}`;
+
+        const updatedUserAvatar = await userModel.findByIdAndUpdate(user._id, {
+            avatar: {
+                path: avatarUrlPath,
+                filename: req.file.originalname,
+            },
+        });
+
+        return successResponse(res, 200, updatedUserAvatar);
+    } catch (err) {
+        return errorResponse(res, 500, err.message);
+    }
+};

@@ -20,6 +20,7 @@ app.use(cookieParser());
 
 //*static path
 app.use("/posts", express.static(path.join(__dirname, "public/posts")));
+app.use("/avatars", express.static(path.join(__dirname, "public/avatars")));
 
 // *cors policy
 app.use(

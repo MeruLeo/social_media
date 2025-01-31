@@ -7,8 +7,6 @@ const successResponse = (res, statusCode = 200, data) => {
 
 // *error response
 const errorResponse = (res, statusCode, message, data) => {
-    console.log(message, data);
-
     return res
         .status(statusCode)
         .json({ data, status: statusCode, success: false, error: message });

@@ -21,7 +21,7 @@ const schema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        biography: {
+        bio: {
             type: String,
         },
         role: {
@@ -30,7 +30,8 @@ const schema = new mongoose.Schema(
             default: "user",
         },
         avatar: {
-            type: String,
+            path: { type: String, required: true },
+            filename: { type: String, required: true },
         },
         private: {
             type: Boolean,

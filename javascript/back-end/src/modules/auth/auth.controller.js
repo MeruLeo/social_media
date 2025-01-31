@@ -111,3 +111,43 @@ exports.login = async (req, res) => {
         return errorResponse(res, 500, "خطای سرور", err.message);
     }
 };
+
+exports.refreshToken = async (req, res) => {
+    const { refreshToken: requestToken } = req.body;
+
+    if (!requestToken) {
+        return errorResponse(res, 403, "رفرش توکن ارائه نشده است");
+    }
+
+    try {
+        let refreshToken = await RefreshToken.findOne({ token: requestToken });
+
+        if (!refreshToken) {
+            return errorResponse(res, 403, "رفرش توکن معتبر نیست");
+        }
+
+        if (RefreshToken.verifyExpiration(refreshToken)) {
+            await RefreshToken.findByIdAndRemove(refreshToken._id);
+            return errorResponse(
+                res,
+                403,
+                "رفرش توکن منقضی شده است. لطفا دوباره وارد شوید",
+            );
+        }
+
+        const newAccessToken = jwt.sign(
+            { userId: refreshToken.user._id },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "30day",
+            },
+        );
+
+        successResponse(res, 200, {
+            accessToken: newAccessToken,
+            refreshToken: refreshToken.token,
+        });
+    } catch (err) {
+        return errorResponse(res, 500, "خطای سرور", err.message);
+    }
+};

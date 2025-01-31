@@ -17,6 +17,7 @@ import { SidebarLinkProps } from "@/types";
 import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPage } from "@/redux/slices/page/pageSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function PagesLayout({
     children,
@@ -50,7 +51,7 @@ export default function PagesLayout({
             label: "نظرات شما",
         },
         {
-            href: "/settings",
+            href: `/pages/${page?._id}/settings/edit`,
             icon: <SettingsIcon />,
             label: "تنظیمات حساب",
         },
@@ -90,15 +91,17 @@ export default function PagesLayout({
         ? sidebarOwnExtraLink
         : sidebarOtherExtraLink;
 
-    if (error) return <div>Error: {error}</div>;
+    // if (error) <p>{error}</p>;
 
     return (
         <section className="flex w-full">
             <SidebarProfile
                 sidebarLinks={sidebarLinks}
                 extraLink={sidebarExtraLink}
+                extraStyles="h-screen"
             />
             <div className="w-full">{children}</div>
+            <Toaster />
         </section>
     );
 }

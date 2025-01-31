@@ -19,10 +19,7 @@ const registerValidationScheme = yup.object({
         .min(3, "name must be at least 3 characters")
         .max(50, "name must be at most 50 characters")
         .required("name is required"),
-    biography: yup
-        .string()
-        .max(65, "bio must be at most 65 characters")
-        .optional(),
+    bio: yup.string().max(65, "bio must be at most 65 characters").optional(),
 });
 
 module.exports = registerValidationScheme;

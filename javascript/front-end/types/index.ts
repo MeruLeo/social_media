@@ -9,6 +9,7 @@ export interface SidebarLinkProps {
     clickEvent?: () => void;
     icon: ReactNode;
     label: string;
+    extraStyles?: string;
 }
 
 export interface Page {
@@ -17,6 +18,8 @@ export interface Page {
     avatar: string;
     username: string;
     bio: string;
+    private: boolean;
+    email: string;
     isVerified: boolean;
 }
 
@@ -26,6 +29,8 @@ export interface PageState {
     followers: Page[];
     followings: Page[];
     isOwnPage: boolean;
+    isLoggedIn: boolean;
+    isVerified: boolean;
     posts: PostProps[];
     loading: boolean;
     error: string | null;
@@ -44,7 +49,7 @@ export interface PopupPageProps {
     name: string;
 }
 
-export interface PostMediaProps {
+export interface MediaProps {
     _id: string;
     path: string;
     filename: string;
@@ -54,8 +59,8 @@ export interface PostProps {
     _id: string;
     user: Page;
     caption: string;
-    media: PostMediaProps;
-    hashtags: string[];
+    media: MediaProps;
+    hashtags?: string[];
 }
 
 export interface PostAction {
@@ -63,4 +68,10 @@ export interface PostAction {
     value?: number;
     action: () => void;
     label: string;
+}
+
+export interface PostState {
+    post: PostProps;
+    loading: boolean;
+    error: string | null;
 }

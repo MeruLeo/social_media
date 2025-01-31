@@ -23,6 +23,7 @@ import { PopupPageProps } from "@/types";
 import { handleApiError } from "@/src/utils/errorHandler";
 import toast from "react-hot-toast";
 import Post from "@/components/profile/post";
+import AvatarPage from "@/components/ui/avatar";
 
 interface AccountInfoProps {
     pageId: string;
@@ -84,13 +85,13 @@ const AccountInfo = ({
         <section className="w-full flex flex-col items-start">
             <header className="flex w-full justify-between">
                 <div className="flex items-center gap-4">
-                    <Avatar
+                    <AvatarPage
                         src={avatar}
                         alt="user avatar"
                         size="lg"
                         radius="full"
-                        isBordered
-                        className="w-[10rem] h-[10rem]"
+                        isBorder
+                        extraStyles="w-[10rem] h-[10rem]"
                     />
                     <div className="flex items-start flex-col">
                         <h3 className="font-sfBlack text-5xl font-bold">
@@ -191,14 +192,14 @@ export default function ProfilePage() {
         }
     }, [pageId, dispatch]);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error}</div>;
+    // if (loading) return <div>Loading...</div>;
+    if (error) return <div>{error}</div>;
 
     return (
         <div className="p-4 flex overflow-auto gap-12 flex-col justify-start items-center w-full h-screen ">
             <AccountInfo
                 pageId={pageId}
-                avatar="https://avatars.githubusercontent.com/u/169075466?v=4"
+                avatar={page?.avatar}
                 bio={page?.bio}
                 name={page?.name}
                 username={page?.username}
@@ -211,9 +212,11 @@ export default function ProfilePage() {
             <section className="w-full">
                 <Tabs radius="full" size="lg">
                     <Tab title={`همه پست ها`} className="flex  flex-col gap-4">
-                        {posts.map((post) => (
-                            <Post key={post._id} {...post} user={page} />
-                        ))}
+                        {posts
+                            .map((post) => (
+                                <Post key={post._id} {...post} user={page} />
+                            ))
+                            .reverse()}
                     </Tab>
                     <Tab title={` رسانه ها`}></Tab>
                     <Tab title={` نوشته ها (به زودی)`} isDisabled></Tab>

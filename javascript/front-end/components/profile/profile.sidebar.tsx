@@ -37,12 +37,18 @@ const SidebarLink = ({ href, icon, label }: SidebarLinkProps) => {
 export const SidebarProfile = ({
     sidebarLinks,
     extraLink,
+    extraStyles,
 }: {
     sidebarLinks: SidebarLinkProps[];
     extraLink?: SidebarLinkProps;
+    extraStyles?: string;
 }) => {
     return (
-        <div className="bg-zinc-800 w-fit justify-between items-center relative top-0  h-screen z-40 flex flex-col">
+        <div
+            className={`bg-zinc-800 w-fit justify-between items-center relative top-0 z-40 flex flex-col ${
+                extraStyles
+            }`}
+        >
             <nav className="flex flex-col relative p-2">
                 {sidebarLinks.map((link) => (
                     <SidebarLink key={link.href} {...link} />

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { HomeSimple } from "iconoir-react";
 import { Tooltip } from "@nextui-org/tooltip";
 import { BellIcon, DirectIcon, PlusIcon } from "../icons/icons";
@@ -9,11 +9,13 @@ import { Logo, SearchIcon } from "../icons";
 import UserDropdown from "./sidebarAvatar";
 import { usePathname } from "next/navigation";
 import { SidebarLinkProps } from "@/types";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { fetchPage } from "@/redux/slices/page/pageSlice";
 
 const SidebarLink = ({ href, icon, label }: SidebarLinkProps) => {
     const pathname = usePathname();
 
-    // بررسی اکتیو بودن لینک
     const isActive = pathname === href;
 
     return (
@@ -33,6 +35,15 @@ const SidebarLink = ({ href, icon, label }: SidebarLinkProps) => {
 };
 
 export const Sidebar = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    const { page } = useSelector((state: RootState) => state.page);
+
+    // useEffect(() => {
+    //     if (page && page._id) {
+    //         dispatch(fetchPage(page._id));
+    //     }
+    // }, [page, dispatch]);
+
     const sidebarLinks: SidebarLinkProps[] = [
         {
             href: "/",
@@ -69,10 +80,7 @@ export const Sidebar = () => {
                     <SidebarLink key={sidebarLink.label} {...sidebarLink} />
                 ))}
             </nav>
-            <UserDropdown
-                avatarSrc="https://avatars.githubusercontent.com/u/169075466?v=4"
-                avatarAlt="User Avatar"
-            />
+            <UserDropdown avatarSrc={page?.avatar} avatarAlt={page?.username} />
         </div>
     );
 };

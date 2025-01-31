@@ -4,7 +4,7 @@ const followModel = require("../models/Follow");
 
 module.exports = async (userId, pageId) => {
     try {
-        if (userId === pageId) return true;
+        if (userId.toString() === pageId.toString()) return true;
 
         const page = await userModel.findById(pageId);
         if (!page.private) return true;

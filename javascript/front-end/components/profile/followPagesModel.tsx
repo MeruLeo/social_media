@@ -27,10 +27,11 @@ export default function FollowPagesModal({
         <Modal
             isOpen={isOpen}
             onOpenChange={(open) => {
-                if (!open) onClose(); // بستن مودال هنگام کلیک بیرون
+                if (!open) onClose();
             }}
             backdrop="transparent"
             radius="lg"
+            className="rounded-3xl"
         >
             <ModalContent>
                 {(onCloseInner) => (
